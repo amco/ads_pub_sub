@@ -1,36 +1,36 @@
 # AdsPubSub
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ads_pub_sub`. To experiment with that code, run `bin/console` for an interactive prompt.
+This Gem should be a simple interface to PubSub or Messaging Systems. The idea is to have 2 public methods: `publish` and `subscribe` with which the apps will interact.
 
-TODO: Delete this and the text above, and describe your gem
+Currentl only GooglePubSub adapter exists.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'ads_pub_sub'
+gem 'ads_pub_sub', git: "amco/ads_pub_sub"
 ```
 
 And then execute:
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install ads_pub_sub
-
 ## Usage
 
-TODO: Write usage instructions here
+Initialize a pubsub with:
 
-## Development
+```
+AdsPubSub::Base.new(config_obj, adapter)
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+The adapter can be left out and will default to :google.
+Currently only GooglePubSub adapter is implemented.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+the config object will depend on the Adapter and is a hash with the values required by the Adapter to work.
 
-## Contributing
+On Google PubSub this values are:
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ads_pub_sub.
-
+**keyfile** Refers to the local path where the service account JSON auth file is stored.
+**project_id** Is the project id with PubSub access.
+**scope** Is the list of scopes required for auth access to the service account.
