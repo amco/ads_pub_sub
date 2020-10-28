@@ -18,8 +18,9 @@ module AdsPubSub
     def publish(name, message, opts = {})
       async = opts.delete(:async) || false
       method = async ? :publish_async : :publish
+      topic_opts = async ? {async: async} : {}
 
-      topic(name).
+      topic(name, topic_opts).
         send(method, message, **opts)
     end
 
@@ -44,8 +45,8 @@ module AdsPubSub
       config
     end
 
-    def topic(name)
-      topics[name] ||= pubsub.topic("projects/amco-ads/topics/#{name}")
+    def topic(name, opts = {})
+      topics[name] ||= pubsub.topic("projects/amco-ads/topics/#{name}", opts)
     end
 
     def subscription(name)
