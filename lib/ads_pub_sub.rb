@@ -7,7 +7,7 @@ module AdsPubSub
       @service = adapter_class(adapter).new(config_obj)
     end
 
-    def publish(topic, message)
+    def publish(topic, message, opts = {})
       @service.publish(topic, message)
     end
 

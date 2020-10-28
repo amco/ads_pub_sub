@@ -15,9 +15,12 @@ module AdsPubSub
       @pubsub = Google::Cloud::PubSub.new(project_id: project_id, credentials: credentials)
     end
 
-    def publish(name, message)
+    def publish(name, message, opts = {})
+      async = opts.delete(:async) || false
+      method = async ? :publish_async : :publish
+
       topic(name).
-        publish(message)
+        send(method, message, **opts)
     end
 
     def subscribe(name)
