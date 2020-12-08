@@ -58,7 +58,7 @@ module AdsPubSub
     end
 
     def base_project_path
-      "projects/#{projec_id}"
+      "projects/#{project_id}"
     end
   end
 end
