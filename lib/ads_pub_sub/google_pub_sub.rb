@@ -46,15 +46,19 @@ module AdsPubSub
     end
 
     def topic(name, opts = {})
-      topics[name] ||= pubsub.topic("projects/amco-ads/topics/#{name}", opts)
+      topics[name] ||= pubsub.topic("#{base_project_path}/topics/#{name}", opts)
     end
 
     def subscription(name)
-      subscriptions[name] ||= pubsub.subscription("projects/amco-ads/subscriptions/#{name}")
+      subscriptions[name] ||= pubsub.subscription("#{base_project_path}/subscriptions/#{name}")
     end
 
     def credentials
       @_credentials ||= Google::Cloud::PubSub::Credentials.new(keyfile, scope: scope)
+    end
+
+    def base_project_path
+      "projects/#{projec_id}"
     end
   end
 end
