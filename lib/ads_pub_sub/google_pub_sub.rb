@@ -46,7 +46,7 @@ module AdsPubSub
     end
 
     def topic(name, opts = {})
-      topics[name] ||= pubsub.topic("#{base_project_path}/topics/#{name}", opts)
+      topics[name] ||= pubsub.topic("#{base_project_path}/topics/#{name}", **opts)
     end
 
     def subscription(name)
