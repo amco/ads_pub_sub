@@ -8,7 +8,7 @@ module AdsPubSub
     end
 
     def publish(topic, message, opts = {})
-      @service.publish(topic, message)
+      @service.publish(topic, message, opts)
     end
 
     def subscribe(subscription, &block)
