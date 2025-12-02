@@ -33,8 +33,8 @@ module AdsPubSub
 
     private
 
-    def ads_async_publish(message, opts)
-      topic.publish_async(message, **opts) do |result|
+    def ads_async_publish(msg_topic, message, opts)
+      msg_topic.publish_async(message, **opts) do |result|
         if result.succeeded?
           log_results("\t==== Message send correctly #{result.inspect}.")
         else
@@ -43,11 +43,11 @@ module AdsPubSub
       end
 
       # prevents droping messages ensuring sending them before process closes
-      topic.async_publisher.stop!
+      msg_topic.async_publisher.stop!
     end
 
-    def ads_publich(message, opts)
-      topic.publish(message, **opts)
+    def ads_publich(msg_topic, message, opts)
+      msg_topic.publish(message, **opts)
     end
 
     def validate_config(config)
