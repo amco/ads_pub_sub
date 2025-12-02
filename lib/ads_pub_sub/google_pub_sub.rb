@@ -35,12 +35,15 @@ module AdsPubSub
 
     def ads_async_publish(message, opts)
       topic.publish_async(message, **opts) do |result|
-        if result.succeed?
+        if result.succeeded?
           log_results("\t==== Message send correctly #{result.inspect}.")
         else
           log_results("\t==== Message sent with an error: #{result.inspect}")
         end
       end
+
+      # prevents droping messages ensuring sending them before process closes
+      topic.async_publisher.stop!
     end
 
     def ads_publich(message, opts)
