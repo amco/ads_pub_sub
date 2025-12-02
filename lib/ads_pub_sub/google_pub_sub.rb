@@ -17,11 +17,11 @@ module AdsPubSub
 
     def publish(name, message, opts = {})
       async = opts.delete(:async) || false
-      method = async ? :publish_async : :publish
-      topic_opts = async ? {async: async} : {}
+      topic_opts = async ? { async: async } : {}
+      msg_topic = topic(name, topic_opts)
+      return ads_async_publish(msg_topic, message, opts) if async
 
-      topic(name, topic_opts).
-        send(method, message, **opts)
+      ads_publish(msg_topic, message, opts)
     end
 
     def subscribe(name)
@@ -32,6 +32,20 @@ module AdsPubSub
     end
 
     private
+
+    def ads_async_publish(message, opts)
+      topic.publish_async(message, **opts) do |result|
+        if result.succeed?
+          log_results("\t==== Message send correctly #{result.inspect}.")
+        else
+          log_results("\t==== Message sent with an error: #{result.inspect}")
+        end
+      end
+    end
+
+    def ads_publich(message, opts)
+      topic.publish(message, **opts)
+    end
 
     def validate_config(config)
       errors = []
@@ -59,6 +73,14 @@ module AdsPubSub
 
     def base_project_path
       "projects/#{project_id}"
+    end
+
+    def log_results(msg)
+      if defined?(Rails)
+        Rails.logger.info(msg)
+      else
+        puts(msg)
+      end
     end
   end
 end
